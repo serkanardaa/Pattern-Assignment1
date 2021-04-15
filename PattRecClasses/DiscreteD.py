@@ -24,11 +24,13 @@ class DiscreteD:
         R= row vector with integer random data drawn from the DiscreteD object
            (size(R)= [1, nData]
         """
-        
-        #*** Insert your own code here and remove the following error message 
-        
-        print('Not yet implemented')
-        
+        R = np.empty(nData) 
+        # Assume probMass from init  NOT __init__
+        maxVal = len(self.probMass)
+        for i in range(nData):
+            R[i] = np.random.rand(1)*maxVal
+            R[i] = np.round(R[i],0)
+        return R
         
     def init(self, x):
         """

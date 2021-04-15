@@ -1,5 +1,5 @@
 import numpy as np
-from .DiscreteD import DiscreteD
+from DiscreteD import DiscreteD
 
 class MarkovChain:
     """
@@ -86,8 +86,9 @@ class MarkovChain:
         """
         
         #*** Insert your own code here and remove the following error message 
+
         
-        print('Not yet implemented')
+        return S        
 
     def viterbi(self):
         pass
