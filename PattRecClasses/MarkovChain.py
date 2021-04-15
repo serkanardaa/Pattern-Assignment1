@@ -86,9 +86,13 @@ class MarkovChain:
         """
         
         #*** Insert your own code here and remove the following error message 
-
+        S = np.empty(tmax)
+        S[0] = DiscreteD(self.q).rand(1)
         
-        # return S        
+        for i in range(1,tmax):
+            S[i] = DiscreteD(self.A[S[i-1],:]).rand(1) # bugged
+        
+        return S        
 
     def viterbi(self):
         pass

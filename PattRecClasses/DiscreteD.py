@@ -24,6 +24,9 @@ class DiscreteD:
         R= row vector with integer random data drawn from the DiscreteD object
            (size(R)= [1, nData]
         """
+
+        # J: First manual implementation
+        """ 
         R = np.random.rand(nData) 
         # Assume probMass from init  NOT __init__
         maxVal = len(self.probMass)
@@ -41,6 +44,10 @@ class DiscreteD:
             # Old uniform implementation independent of input dist
             #R[i] = np.random.rand(1)*maxVal
             #R[i] = np.round(R[i],0)
+        """
+        # Numpy solution
+        R = np.random.choice(len(self.probMass), nData, p=self.probMass)
+
         return R
         
     def init(self, x):
@@ -63,9 +70,9 @@ class DiscreteD:
         """
         if len(np.shape(x))>1: 
             print('DiscreteD object can have only scalar data')
-            
+           
         x = np.round(x)
-        maxObs = int(np.max(x))
+        maxObs = int(np.max(x) )
         # collect observation frequencies
 
         # J: I think their indexing and loop is wrong. 

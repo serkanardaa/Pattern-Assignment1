@@ -1,15 +1,7 @@
 from DiscreteD import DiscreteD
-#from MarkovChain import MarkovChain
+from MarkovChain import MarkovChain
 import numpy as np
 
-def markov_test():
-    """
-    d1 = DiscreteD(x)
-    d1.init()
-    mc = MarkovChain()
-    x = 10 # placeholder
-    """
-    pass
 
 def init_pmass_test():
     weight = 5
@@ -63,22 +55,45 @@ def discrete_rand_implement_test():
     # print(ran1)
 
 def discrete_rand_test():
+    # Monte Carlo
     x = np.array([1,2,3,4,5,1])
-    dist1 = DiscreteD(x)
-    # print("Dist1", dist1.probMass)
-    dist2 = dist1.init(x)
-    print("Dist2", dist2.probMass)
-    nData = 5
+    M = 1000
+    #rand_samp = np.array(M)
+    rand_sum = np.zeros(np.max(x)+1)
+    for i in range(M):
+        dist1 = DiscreteD(x)
+        print("Dist1", dist1.probMass)
+        #dist2 = dist1.init(x)
+        #print("Dist2", dist2.probMass)
+        nData = 5
 
-    rand_samp = dist2.rand(nData)
+        rand_samp = dist1.rand(nData)
 
-    print(rand_samp)
+        print(rand_samp)
+        for j in range(np.max(x)+1):
+            rand_sum[j] = rand_sum[j] + np.sum(rand_samp==j)
+    result = rand_sum/(nData*M)
+    print(result)
+    print(np.sum(result))
+
+def markov_test():
+    x = np.array([1,2,3,4,5])
+    d1 = DiscreteD(x)
+    q = d1.probMass
+    A = np.array([[1,2,3],[4,5,6]])
+    A = DiscreteD(A).probMass
+    print(q)
+    print(A[1,2])
+
+    # mc = MarkovChain(q,A)
+    # S = mc.rand(5)
+
+    #print(S)
 
 def main():
-    discrete_rand_test()
-    #markov_test()
+    #discrete_rand_test()
+    markov_test()
     #init_pmass_test()
-    pass
-
+    
 if __name__ == "__main__":
     main()
