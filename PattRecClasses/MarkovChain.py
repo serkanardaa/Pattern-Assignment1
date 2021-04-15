@@ -88,7 +88,7 @@ class MarkovChain:
         #*** Insert your own code here and remove the following error message 
 
         
-        return S        
+        # return S        
 
     def viterbi(self):
         pass

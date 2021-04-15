@@ -1,7 +1,7 @@
 import numpy as np
-from .DiscreteD import DiscreteD
-from .GaussD import GaussD
-from .MarkovChain import MarkovChain
+from DiscreteD import DiscreteD
+from GaussD import GaussD
+from MarkovChain import MarkovChain
 
 
 class HMM:

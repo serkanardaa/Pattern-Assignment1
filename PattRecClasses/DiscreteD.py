@@ -24,12 +24,23 @@ class DiscreteD:
         R= row vector with integer random data drawn from the DiscreteD object
            (size(R)= [1, nData]
         """
-        R = np.empty(nData) 
+        R = np.random.rand(nData) 
         # Assume probMass from init  NOT __init__
         maxVal = len(self.probMass)
+        poss_val = np.arange(maxVal) # with my suggested init this has right length
+
         for i in range(nData):
-            R[i] = np.random.rand(1)*maxVal
-            R[i] = np.round(R[i],0)
+            max_index = 0
+            max_val = 0
+            for j in poss_val:
+                rand_probMass = self.probMass[j]*np.random.rand(1)
+                if np.max(rand_probMass) > max_val:
+                    max_index = j
+                    max_val = np.max(rand_probMass)
+            R[i] = poss_val[max_index]
+            # Old uniform implementation independent of input dist
+            #R[i] = np.random.rand(1)*maxVal
+            #R[i] = np.round(R[i],0)
         return R
         
     def init(self, x):
@@ -56,10 +67,26 @@ class DiscreteD:
         x = np.round(x)
         maxObs = int(np.max(x))
         # collect observation frequencies
-        fObs = np.zeros(maxObs) # observation frequencies
 
-        for i in range(maxObs):
+        # J: I think their indexing and loop is wrong. 
+        
+        """
+        fObs = np.zeros(maxObs) # observation frequencies
+        # the list is one index too short if we want to have both max and 0
+        for i in range(maxObs): 
             fObs[i] = 1 + np.sum(x==i)
+            # does not take the upper bound (maxObs) into account
+            # i = 0:maxObs-1
+            # also 1 + makes it not work properly
+        """
+        
+        # J: my new suggestion
+        fObs = np.zeros(maxObs+1)
+
+        for i in range(maxObs+1):
+            fObs[i] = np.sum(x==i)
+
+        # J: end of suggestion. Run test.py/discrete_pmass_test() for verification
         
         self.probMass = fObs/np.sum(fObs)
 
