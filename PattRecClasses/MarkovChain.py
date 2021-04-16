@@ -1,5 +1,5 @@
 import numpy as np
-from DiscreteD import DiscreteD
+from .DiscreteD import DiscreteD
 
 class MarkovChain:
     """
@@ -85,13 +85,14 @@ class MarkovChain:
            length(S) <= tmaxs
         """
         
-        #*** Insert your own code here and remove the following error message 
         S = np.empty(tmax)
         S[0] = DiscreteD(self.q).rand(1)
         
-        for i in range(1,tmax):
-            S[i] = DiscreteD(self.A[S[i-1],:]).rand(1) # bugged
-        
+        for i in range(1,tmax): # loops until tmax-1 -> Does not include the end state
+            index = int(S[i-1])
+            #print(index)
+            #print("A test", self.A[index,:])
+            S[i] = DiscreteD(self.A[index,:]).rand(1)
         return S        
 
     def viterbi(self):

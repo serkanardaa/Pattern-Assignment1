@@ -1,7 +1,7 @@
 from DiscreteD import DiscreteD
 from MarkovChain import MarkovChain
 import numpy as np
-
+from GaussD import GaussD
 
 def init_pmass_test():
     weight = 5
@@ -77,23 +77,49 @@ def discrete_rand_test():
     print(np.sum(result))
 
 def markov_test():
-    x = np.array([1,2,3,4,5])
+    x = np.array([1,2,3])
     d1 = DiscreteD(x)
     q = d1.probMass
-    A = np.array([[1,2,3],[4,5,6]])
+    A = np.array([[1,2,3],[4,5,6],[3,4,5]])
     A = DiscreteD(A).probMass
     print(q)
     print(A[1,2])
 
-    # mc = MarkovChain(q,A)
-    # S = mc.rand(5)
+    mc = MarkovChain(q,A)
+    S = mc.rand(30)
 
-    #print(S)
+    print(S)
+    print(len(S))
+
+def HMM_test():
+    
+    x = np.array([1,2,3])
+    d1 = DiscreteD(x)
+    q = d1.probMass
+    A = np.array([[1,2,3],[4,5,6],[3,4,5]])
+    A = DiscreteD(A).probMass
+    print(q)
+    print(A[1,2])
+
+    mc = MarkovChain(q,A)
+    S = mc.rand(30)
+    
+    mc = MarkovChain(q,A)
+    S = mc.rand(30)
+
+    print(S)
+    print(len(S))
+    
+    g1 = GaussD([2])
+    g2 = GaussD([3])
+    hmm = HMM(mc, [g1,g2])
+    
 
 def main():
     #discrete_rand_test()
-    markov_test()
+    #markov_test()
     #init_pmass_test()
-    
+    HMM_test()
+
 if __name__ == "__main__":
     main()

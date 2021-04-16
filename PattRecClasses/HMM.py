@@ -1,7 +1,7 @@
 import numpy as np
-from DiscreteD import DiscreteD
-from GaussD import GaussD
-from MarkovChain import MarkovChain
+from .DiscreteD import DiscreteD
+from .GaussD import GaussD
+from .MarkovChain import MarkovChain
 
 
 class HMM:
@@ -69,11 +69,14 @@ class HMM:
           If the StateGen is a finite-duration MarkovChain,
               nS <= nSamples
         """
+        S = self.stateGen.rand(nSamples)
+        X = np.empty([self.dataSize,nSamples])
+        for i in range(nSamples):
+            index = int(S[i])
+            X[:,i] = self.outputDistr[index].rand(self.dataSize) # rand(1)? How much do we want?
+        return [X,S]
         
-        #*** Insert your own code here and remove the following error message 
-        
-        print('Not yet implemented')
-        
+
     def viterbi(self):
         pass
 
