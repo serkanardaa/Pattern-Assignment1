@@ -70,10 +70,15 @@ class HMM:
               nS <= nSamples
         """
         S = self.stateGen.rand(nSamples)
-        X = np.empty([self.dataSize,nSamples])
-        for i in range(nSamples):
+        if len(S) != nSamples: # for handeling finite chains
+            nS = len(S)
+        else:
+            nS = nSamples
+        X = np.empty([self.dataSize,nS])
+        for i in range(nS):
             index = int(S[i])
-            X[:,i] = self.outputDistr[index].rand(self.dataSize) # rand(1)? How much do we want?
+            output = self.outputDistr[index].rand(1)
+            X[:,i] = output.reshape(self.dataSize,) # for handeling multidim
         return [X,S]
         
 

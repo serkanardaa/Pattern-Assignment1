@@ -92,7 +92,12 @@ class MarkovChain:
             index = int(S[i-1])
             #print(index)
             #print("A test", self.A[index,:])
-            S[i] = DiscreteD(self.A[index,:]).rand(1)
+            value = DiscreteD(self.A[index,:]).rand(1)
+            if value == self.A.shape[0]:
+                print(value)
+                print('Finite chain has come to an end at index', i, 'instead of ', tmax) 
+                return S[0:i]
+            S[i] = value
         return S        
 
     def viterbi(self):
