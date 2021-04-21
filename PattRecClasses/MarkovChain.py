@@ -94,7 +94,7 @@ class MarkovChain:
             #print("A test", self.A[index,:])
             value = DiscreteD(self.A[index,:]).rand(1)
             if value == self.A.shape[0]:
-                print('Finite chain has come to an end at index', i, 'instead of ', tmax) 
+                #print('Finite chain has come to an end at index', i, 'instead of ', tmax) 
                 return S[0:i]
             S[i] = value
         return S        
