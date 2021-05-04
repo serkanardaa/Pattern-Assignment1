@@ -147,7 +147,7 @@ class MarkovChain:
         
         ### Termination:
         if self.is_finite:
-            c[T+1] = np.multiply(ahat[:,T],self.A[:,self.nStates])  # same here
+            c[T] = np.multiply(ahat[:,T],self.A[:,self.nStates])  # same here
         return [ahat, c]
 
     def viterbi(self):
