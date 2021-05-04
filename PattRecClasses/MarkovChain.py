@@ -118,7 +118,7 @@ class MarkovChain:
 
         Compatible with both finite and infinite HMM.
         """
-    pass
+        pass
 
     def viterbi(self):
         pass
