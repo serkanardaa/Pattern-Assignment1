@@ -2,6 +2,7 @@ import numpy as np
 from .DiscreteD import DiscreteD
 from .GaussD import GaussD
 from .MarkovChain import MarkovChain
+from .Px_calc import *
 
 
 class HMM:
@@ -94,8 +95,12 @@ class HMM:
     def setStationary(self):
         pass
 
-    def logprob(self):
-        pass
+    def logprob(self, x_series):
+        P, scale_factor = Px_calc(x_series, self.outputDistr)
+        [ahat, c] = self.stateGen.forward(P)
+        obs_prob = np.sum(np.log(c))
+        return obs_prob
+        
 
     def adaptStart(self):
         pass
