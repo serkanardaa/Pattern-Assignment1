@@ -141,19 +141,13 @@ class MarkovChain:
         ### Forward step:
         for t in range(1,T-1)    
             for j in range(self.nStates):
-                a_temp[j,t] = pX[t,j]*ahat[:,t-1].transpose()*self.A[:,j]
+                a_temp[j,t] = pX[t,j]*np.multiply(ahat[:,t-1],self.A[:,j])  # multiplying the two row vectors ahat[:,t-1] and A[:,j] sums them directly
             c[t] = np.sum(a_temp[:,t])
             ahat[:,t] = a_temp[:,t] / c[t]
-        """
         
-                temp = 0
-                for i in range(self.nStates):
-                    temp = temp + ahat[i,t-1]*self.A[i,j]
-        """
         ### Termination:
         if self.is_finite:
-            c[T+1] = ahat[:,T].transpose()*self.A[:,self.nStates]
-            
+            c[T+1] = np.multiply(ahat[:,T],self.A[:,self.nStates])  # same here
         return [ahat, c]
 
     def viterbi(self):
