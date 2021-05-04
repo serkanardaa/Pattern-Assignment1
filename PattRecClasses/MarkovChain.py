@@ -125,7 +125,7 @@ class MarkovChain:
         a_temp = np.empty([self.nStates,T])  # temporary forward variable
         ahat = np.empty([self.nStates,T])  # scaled forward varialbes 
         if self.is_finite:
-            c = np.zero([1,T+1])
+            c = np.zeros([1,T+1])
         else:
             c = np.zeros([1,T])  # forward scale factors
 
