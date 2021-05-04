@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.matlib
+import scipy.stats
 
 class GaussD:
     """
@@ -51,7 +52,22 @@ class GaussD:
         R = R + np.matlib.repmat(self.means.reshape(-1, 1), 1, nData)
 
         return R
-    
+
+    def prob(self,x):
+        """
+        px = prob(x) calculates the probability of x coming from this distribution
+
+        Input:
+        x =     scalar number
+
+        Output:
+        px =    probability of x coming from this distribution
+        """
+        dist = scipy.stats.norm(self.means, self.stdevs)  # creates the distribution
+        px = dist.pdf(x)  # takes the probability density function at the point x
+
+        return px
+
     def init(self):
         pass
     
