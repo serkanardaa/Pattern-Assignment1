@@ -139,7 +139,7 @@ class MarkovChain:
         ahat[:,0] = a_temp[:,0] / c[0]
 
         ### Forward step:
-        for t in range(1,T-1)    
+        for t in range(1,T): 
             for j in range(self.nStates):
                 a_temp[j,t] = pX[t,j]*np.multiply(ahat[:,t-1],self.A[:,j])  # multiplying the two row vectors ahat[:,t-1] and A[:,j] sums them directly
             c[t] = np.sum(a_temp[:,t])
