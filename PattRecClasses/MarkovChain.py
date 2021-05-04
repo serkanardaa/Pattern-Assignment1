@@ -101,15 +101,15 @@ class MarkovChain:
 
     def forward(self,pX):
         """
-        [ahat, ct] = forward(pX)  calculates the scaled forward variables ahat and forward scale factor ct
+        [ahat, c] = forward(pX)  calculates the scaled forward variables ahat and forward scale factor ct
 
         Input:
         pX =    proportional to b(x) which is the state-conditional pmass/density for each state and frame
                 in the observed sequence. (T,N)
 
-        Output:
-        ahat =  scaled forward variable. (N,1)
-        ct =    forward scale factor. (1,T) for infinite and (1,T+1) for finite
+        Output:  !!! NOTE that outputs will also be scaled since input is scaled !!!
+        ahat =  scaled forward variable. (N,T)
+        c =    forward scale factor. (1,T) for infinite and (1,T+1) for finite
 
         Performs the three steps of the Forward algorithm specified by the compendium on page 108:
             Initialization: 
@@ -124,18 +124,37 @@ class MarkovChain:
         # Variable allocation
         a_temp = np.empty([self.nStates,T])  # temporary forward variable
         ahat = np.empty([self.nStates,T])  # scaled forward varialbes 
-        ct = np.zeros([1,T])  # forward scale factors
+        if self.is_finite:
+            c = np.zero([1,T+1])
+        else:
+            c = np.zeros([1,T])  # forward scale factors
 
         ### Initialization: First element (index 0) in each list
         # a_temp[:,0] calculation
         for j in range(self.nStates):
-            a_temp[j,0] = self.q[j]*pX[0,j]
+            a_temp[j,0] = self.q[j]*pX[0,j]  # b in original is substituted by pX 
         # c[0] calculation
         c[0] = np.sum(a_temp[:,0])
         # ahat[:,0] calculation
         ahat[:,0] = a_temp[:,0] / c[0]
 
-        return [ahat, ct]
+        ### Forward step:
+        for t in range(1,T-1)    
+            for j in range(self.nStates):
+                a_temp[j,t] = pX[t,j]*ahat[:,t-1].transpose()*self.A[:,j]
+            c[t] = np.sum(a_temp[:,t])
+            ahat[:,t] = a_temp[:,t] / c[t]
+        """
+        
+                temp = 0
+                for i in range(self.nStates):
+                    temp = temp + ahat[i,t-1]*self.A[i,j]
+        """
+        ### Termination:
+        if self.is_finite:
+            c[T+1] = ahat[:,T].transpose()*self.A[:,self.nStates]
+            
+        return [ahat, c]
 
     def viterbi(self):
         pass
