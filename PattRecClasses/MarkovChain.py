@@ -99,6 +99,27 @@ class MarkovChain:
             S[i] = value
         return S        
 
+    def forward(self,pX):
+        """
+        [ahat, ct] = forward(pX)  calculates the scaled forward variables ahat and forward scale factor ct
+
+        Input:
+        pX =    proportional to b(x) which is the state-conditional pmass/density for each state and frame
+                in the observed sequence. (T,N)
+
+        Output:
+        ahat =  scaled forward variable. (N,1)
+        ct =    forward scale factor. (1,T) for infinite and (1,T+1) for finite
+
+        Performs the three steps of the Forward algorithm specified by the compendium on page 108:
+            Initialization: 
+            Forward step:
+            Termination:
+
+        Compatible with both finite and infinite HMM.
+        """
+    pass
+
     def viterbi(self):
         pass
     
@@ -121,9 +142,6 @@ class MarkovChain:
         pass
     
     def initErgodic(self):
-        pass
-
-    def forward(self):
         pass
 
     def finiteDuration(self):
