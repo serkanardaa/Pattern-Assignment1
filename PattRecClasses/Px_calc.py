@@ -12,7 +12,8 @@ def Px_calc(x_series, state_dists):
         for j in range(num_cols):
             p =  state_dists[j].prob( x_series[i] )
             Px[i,j] = p
+    max_dists = np.max(Px, axis = 1).reshape(-1,1) # Vector (num_rows x 1) that contains maximum probability of each observed x among all distributions 
+    scaled_Px =Px / max_dists
             
-    sum_states = Px.sum(axis = 1).reshape(Px.shape[0],1)
-    norm_Px = Px/sum_states
-    return norm_Px
+
+    return scaled_Px
