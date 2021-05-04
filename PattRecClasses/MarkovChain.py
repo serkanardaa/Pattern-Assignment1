@@ -118,7 +118,24 @@ class MarkovChain:
 
         Compatible with both finite and infinite HMM.
         """
-        pass
+        
+        T = pX.shape.[0]  # extracts the length of the observed sequence
+
+        # Variable allocation
+        a_temp = np.empty([self.nStates,T])  # temporary forward variable
+        ahat = np.empty([self.nStates,T])  # scaled forward varialbes 
+        ct = np.zeros([1,T])  # forward scale factors
+
+        ### Initialization: First element (index 0) in each list
+        # a_temp[:,0] calculation
+        for j in range(self.nStates):
+            a_temp[j,0] = self.q[j]*pX[0,j]
+        # c[0] calculation
+        c[0] = np.sum(a_temp[:,0])
+        # ahat[:,0] calculation
+        ahat[:,0] = a_temp[:,0] / c[0]
+
+        return [ahat, ct]
 
     def viterbi(self):
         pass
