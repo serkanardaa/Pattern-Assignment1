@@ -105,50 +105,49 @@ class MarkovChain:
 
         Input:
         pX =    proportional to b(x) which is the state-conditional pmass/density for each state and frame
-                in the observed sequence. (T,N)
+                in the observed sequence. (N,T)
 
         Output:  !!! NOTE that outputs will also be scaled since input is scaled !!!
         ahat =  scaled forward variable. (N,T)
         c =    forward scale factor. (1,T) for infinite and (1,T+1) for finite
 
         Performs the three steps of the Forward algorithm specified by the compendium on page 108:
-            Initialization: 
-            Forward step:
-            Termination:
+            Initialization 
+            Forward step
+            Termination
 
         Compatible with both finite and infinite HMM.
         """
         
-        T = pX.shape[0]  # extracts the length of the observed sequence
+        T = pX.shape[1]  # extracts the length of the observed sequence
 
         # Variable allocation
         a_temp = np.empty([self.nStates,T])  # temporary forward variable
         ahat = np.empty([self.nStates,T])  # scaled forward varialbes 
-        if self.is_finite:
-            c = np.zeros(T+1)
+        if self.is_finite:  # forward scale factors for finite and infinite state
+            c = np.zeros(T+1)  # extra c to account for exit state
         else:
-            c = np.zeros(T)  # forward scale factors
+            c = np.zeros(T)  
 
         ### Initialization: First element (index 0) in each list
         # a_temp[:,0] calculation
         for j in range(self.nStates):
-            a_temp[j,0] = self.q[j]*pX[0,j]  # b in original is substituted by pX 
+            a_temp[j,0] = self.q[j]*pX[j,0]  # b in compendium formula is substituted by pX 
         # c[0] calculation
-        for index in range(a_temp[:,0].shape[0]):  # ugly solution to bug below
+        for index in range(a_temp[:,0].shape[0]):  # TODO perhaps a sum would be more efficient 
             c[0] = c[0] + a_temp[index,0] 
-        # c[0] = np.sum(a_temp[:,0])  # WHY DOES THIS NOT WORK?
-        #print(a_temp.shape)
-        #print(ahat[:,0].shape, a_temp[:,0].shape)
-
         # ahat[:,0] calculation
         ahat[:,0] = a_temp[:,0] / c[0]
 
         ### Forward step:
         for t in range(1,T): 
+            # a_temp[:,t] calculation
             for j in range(self.nStates):
-                output = pX[t,j]*np.matmul(ahat[:,t-1],self.A[:,j])  # multiplying the two row vectors ahat[:,t-1] and A[:,j] sums them directly
-                a_temp[j,t] = output
+                # multiplying the two row vectors ahat[:,t-1] and A[:,j] sums them directly
+                a_temp[j,t] = pX[t,j]*np.matmul(ahat[:,t-1],self.A[:,j])  
+            # c[t] calculation
             c[t] = np.sum(a_temp[:,t])
+            # ahat[:,t] calculation
             ahat[:,t] = a_temp[:,t] / c[t]
         
         ### Termination:
