@@ -97,9 +97,9 @@ class HMM:
         pass
 
     def logprob(self, x_series):
-        P, scale_factor = Px_calc(x_series, self.outputDistr)
-        [ahat, c] = self.stateGen.forward(P)
-        obs_prob = np.sum(np.log(c))
+        P, scale_factor = Px_calc(self.outputDistr, x_series) #calculate P matrix
+        [ahat, c] = self.stateGen.forward(P) #get ahat and c values from forward algorithm by using unscaled P
+        obs_prob = np.sum(np.log(c)) #Calculating observation probability
         return obs_prob
         
 
