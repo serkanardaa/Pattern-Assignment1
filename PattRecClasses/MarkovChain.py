@@ -144,7 +144,7 @@ class MarkovChain:
             # a_temp[:,t] calculation
             for j in range(self.nStates):
                 # multiplying the two row vectors ahat[:,t-1] and A[:,j] sums them directly
-                a_temp[j,t] = pX[t,j]*np.matmul(ahat[:,t-1],self.A[:,j])  
+                a_temp[j,t] = pX[j,t]*np.matmul(ahat[:,t-1],self.A[:,j])  
             # c[t] calculation
             c[t] = np.sum(a_temp[:,t])
             # ahat[:,t] calculation
