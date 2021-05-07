@@ -155,7 +155,7 @@ class MarkovChain:
             c[T] = np.matmul(ahat[:,T-1],self.A[:,self.nStates])  # same here
         return [ahat, c]
 
-    def backward(self):
+    def backward(self, pX, c):
         """
         [bhat] = backward(pX, c) 
         
@@ -177,18 +177,18 @@ class MarkovChain:
         ### Initialization
         if self.is_finite:
             for i in self.nStates:
-                beta(i,T-1) = self.A(i,self.nStates)
-                bhat(i,T-1) = beta(i,T-1)/(c(T-1)*c(T))
+                beta[i,T-1]= self.A[i,self.nStates]
+                bhat[i,T-1] = beta[i,T-1]/(c[T-1]*c[T])
         else:
-            beta(i,T-1) = 1
-            bhat(i,T-1) = 1/c(T-1)
+            beta[i,T-1] = 1
+            bhat[i,T-1] = 1/c[T-1]
         
         ### Backward step
         for t in range(T-1,-1,-1):
             for i in range(self.nStates):
                 for j in range(self.nStates):
-                    sum = self.A(i,j)*pX(t+1,j)*bhat(j,t+1)
-                bhat(i,t) = 1/c(t)* sum
+                    sum = self.A[i,j]*pX[t+1,j]*bhat[j,t+1]
+                bhat[i,t] = 1/c[t]* sum
 
         return bhat
         
