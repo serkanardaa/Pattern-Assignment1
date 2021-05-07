@@ -119,7 +119,7 @@ class MarkovChain:
         Compatible with both finite and infinite HMM.
         """
         
-        T = pX.shape[1]  # extracts the length of the observed sequence
+        T = pX.shape1[1]  # extracts the length of the observed sequence
 
         # Variable allocation
         a_temp = np.empty([self.nStates,T])  # temporary forward variable
@@ -155,6 +155,30 @@ class MarkovChain:
             c[T] = np.matmul(ahat[:,T-1],self.A[:,self.nStates])  # same here
         return [ahat, c]
 
+    def backward(self):
+        """
+        [bhat] = backward(pX, c) 
+        
+        Input:
+        pX =    proportional to b(x) which is the state-conditional pmass/density for each state and frame
+                in the observed sequence. (T,N)
+        c =     forward scale factor. (1,T) for infinite and (1,T+1) for finite
+
+        Output:
+        bhat =  scaled backward variables. (N,T)
+        """
+
+        T = pX.shape1[1]  # extracts the length of the observed sequence
+        
+        # Variable allocation
+        beta = np.empty([self.nStates,T])
+        bhat = np.empty([self.nStates,T])
+
+        ### Initialization
+        if self.is_finite:
+            for i in self.nStates:
+                beta(i,T) = self.A(i,self.nStates)
+                bhat(i,T) = beta(i,T)/(c(T)*c(T+1))
 
     def viterbi(self):
         pass
@@ -183,9 +207,6 @@ class MarkovChain:
     def finiteDuration(self):
         pass
     
-    def backward(self):
-        pass
-
     def adaptStart(self):
         pass
 
