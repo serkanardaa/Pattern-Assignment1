@@ -176,7 +176,7 @@ class MarkovChain:
 
         ### Initialization
         if self.is_finite:
-            for i in self.nStates:
+            for i in range(self.nStates):
                 beta[i,T-1]= self.A[i,self.nStates]
                 bhat[i,T-1] = beta[i,T-1]/(c[T-1]*c[T])
         else:
@@ -184,11 +184,12 @@ class MarkovChain:
             bhat[i,T-1] = 1/c[T-1]
         
         ### Backward step
-        for t in range(T-1,-1,-1):
+        for t in range(T-2,-1,-1):
             for i in range(self.nStates):
+                summation = 0
                 for j in range(self.nStates):
-                    sum = self.A[i,j]*pX[t+1,j]*bhat[j,t+1]
-                bhat[i,t] = 1/c[t]* sum
+                    summation += self.A[i,j]*pX[j,t+1]*bhat[j,t+1]
+                bhat[i,t] = 1/c[t]* summation
 
         return bhat
         
