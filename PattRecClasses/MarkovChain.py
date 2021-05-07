@@ -168,7 +168,7 @@ class MarkovChain:
         bhat =  scaled backward variables. (N,T)
         """
 
-        T = pX.shape1[1]  # extracts the length of the observed sequence
+        T = pX.shape[1]  # extracts the length of the observed sequence
         
         # Variable allocation
         beta = np.empty([self.nStates,T])
