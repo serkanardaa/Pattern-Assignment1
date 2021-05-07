@@ -119,7 +119,7 @@ class MarkovChain:
         Compatible with both finite and infinite HMM.
         """
         
-        T = pX.shape1[1]  # extracts the length of the observed sequence
+        T = pX.shape[1]  # extracts the length of the observed sequence
 
         # Variable allocation
         a_temp = np.empty([self.nStates,T])  # temporary forward variable
